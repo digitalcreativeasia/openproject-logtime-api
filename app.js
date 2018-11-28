@@ -2,6 +2,8 @@ const logger = require('koa-logger');
 const router = require('koa-router')();
 const onerror = require('koa-onerror')
 
+const { dbcredentials } = require('./config')
+
 const Koa = require('koa');
 const app = module.exports = new Koa();
 
@@ -15,12 +17,12 @@ app.use(router.routes());
 
 
 async function add(ctx) {
-  ctx.body = {"test": "test"}
+    ctx.body = { "test": "test" }
 }
 
 app.on('error', (err, ctx) => {
-    ctx.body = {"error": "internal server error"}
-  });
+    ctx.body = { "error": "internal server error" }
+});
 
 
 if (!module.parent) app.listen(4000);
