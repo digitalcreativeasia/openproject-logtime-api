@@ -54,7 +54,7 @@ async function add(ctx) {
         
         let conn = await mysql.createConnection(dbcredentials)
         let result = conn.query('INSERT INTO time_entries (project_id, user_id, work_package_id, hours, comments, activity_id, spent_on, tyear, tmonth, tweek, created_on, updated_on) '+
-        'VALUES ("'+project_id+'", "'+user_id+'", "'+work_package_id+'", "'+hours+'", "'+comments+'", "'+activity_id+'", NOW(), "'+year+'", "'+tmonth+'", "'+tweek+'", NOW(), NOW())')
+        'VALUES ("'+project_id+'", "'+user_id+'", "'+work_package_id+'", "'+hours+'", "'+comments+'", "'+activity_id+'", NOW(), "'+tyear+'", "'+tmonth+'", "'+tweek+'", NOW(), NOW())')
         conn.end();
         console.log(result)
         //let overridden_costs
