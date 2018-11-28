@@ -26,6 +26,74 @@ So I have created a simple API that allows you to add a Log Time/time entry via 
     
 * Success indicate with status `200`
 
+* Get `enumeration` of time spent activity: `GET` to `http://host:4000/enum` with `Basic Auth` like above
+
+  * expected response:
+  
+  ```json
+  [
+    {
+        "id": 1,
+        "name": "Management",
+        "position": 1,
+        "is_default": 1,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    },
+    {
+        "id": 2,
+        "name": "Specification",
+        "position": 2,
+        "is_default": 0,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    },
+    {
+        "id": 3,
+        "name": "Development",
+        "position": 3,
+        "is_default": 0,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    },
+    {
+        "id": 4,
+        "name": "Testing",
+        "position": 4,
+        "is_default": 0,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    },
+    {
+        "id": 5,
+        "name": "Support",
+        "position": 5,
+        "is_default": 0,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    },
+    {
+        "id": 6,
+        "name": "Other",
+        "position": 6,
+        "is_default": 0,
+        "type": "TimeEntryActivity",
+        "active": 1,
+        "project_id": null,
+        "parent_id": null
+    }
+]
+  ```
 
 * Customization
 
