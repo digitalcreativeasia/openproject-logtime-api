@@ -5,6 +5,8 @@ const auth = require('basic-auth')
 const axios = require('axios');
 const bodyparser = require('koa-bodyparser')
 const json = require('koa-json')
+const moment = require('moment')
+const mysql = require('promise-mysql')
 
 const { dbcredentials, api_url } = require('./config')
 
@@ -44,16 +46,26 @@ async function add(ctx) {
         let hours = parseFloat(body['hours'])
         let comments = body['comments']
         let activity_id = parseInt(body['activity_id'])
-        let spent_on = STR_TO_DATE(body['spent_on'], '%Y-%m-%d')
-        let tyear
-        let tmonth
-        let tweek
+        let tyear = moment().year()
+        let tmonth = moment().month()
+        let tweek = parseInt(moment().format('W'))
         let created_on = new Date()
         let updated_on = new Date()
         
+        let conn = await mysql.createConnection(dbcredentials)
+        let result = conn.query('INSERT INTO time_entries (project_id, user_id, work_package_id, hours, comments, activity_id, spent_on, tyear, tmonth, tweek, created_on, updated_on) '+
+        'VALUES (`${project_id}`, `${user_id}`, `${work_package_id}`, `${hours}`, `${comments}`, `${activity_id}`, NOW(), `${tyear}`, `${tmonth}`, NOW(), NOW())')
+        conn.end();
+        console.log(result)
         //let overridden_costs
         //let costs
         //let rate_id
+
+
+
+        ctx.body = {
+            "test": "test"
+        }
     } else {
         ctx.status = 401
         ctx.body = {
