@@ -18,12 +18,9 @@ async function add(ctx) {
   ctx.body = {"test": "test"}
 }
 
-
-
-
 app.on('error', (err, ctx) => {
     ctx.body = {"error": "internal server error"}
   });
 
 
-if (!module.parent) app.listen(3000);
+if (!module.parent) app.listen(4000);
