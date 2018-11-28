@@ -25,3 +25,30 @@ So I have created a simple API that allows you to add a Log Time/time entry via 
     * `activity_id`: `<enumerations_id>` Integer
     
 * Success indicate with status `200`
+
+
+* Customization
+
+  `time_entries`'s design table
+
+
+| Field            | Type          | Null | Key | Default | Extra          |
+|------------------|---------------|------|-----|---------|----------------|
+| id               | int(11)       | NO   | PRI | NULL    | auto_increment |
+| project_id       | int(11)       | NO   | MUL | NULL    |                |
+| user_id          | int(11)       | NO   | MUL | NULL    |                |
+| work_package_id  | int(11)       | YES  | MUL | NULL    |                |
+| hours            | float         | NO   |     | NULL    |                |
+| comments         | varchar(255)  | YES  |     | NULL    |                |
+| activity_id      | int(11)       | NO   | MUL | NULL    |                |
+| spent_on         | date          | NO   |     | NULL    |                |
+| tyear            | int(11)       | NO   |     | NULL    |                |
+| tmonth           | int(11)       | NO   |     | NULL    |                |
+| tweek            | int(11)       | NO   |     | NULL    |                |
+| created_on       | datetime      | NO   | MUL | NULL    |                |
+| updated_on       | datetime      | NO   |     | NULL    |                |
+| overridden_costs | decimal(15,4) | YES  |     | NULL    |                |
+| costs            | decimal(15,4) | YES  |     | NULL    |                |
+| rate_id          | int(11)       | YES  |     | NULL    |                |
+
+
