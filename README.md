@@ -22,7 +22,7 @@ So I have created a simple API that allows you to add a Log Time/time entry via 
     * `work_package_id`: `<work_packages_id>` Integer
     * `hours`: `hours of spent`: Float
     * `comments`: `comments max 250chars` String
-    * `activity_id`: `<enumerations_id>` Integer
+    * `activity_id`: `<enumerations_id>` Integer (see `enumeration` below)
     
 * Success indicate with status `200`
 
@@ -92,7 +92,7 @@ So I have created a simple API that allows you to add a Log Time/time entry via 
         "project_id": null,
         "parent_id": null
     }
-]
+  ]
   ```
 
 * Customization
