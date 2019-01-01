@@ -149,14 +149,14 @@ async function add(ctx) {
         }
 
 
-        let hookToSlack = await axios({
+        /*let hookToSlack = await axios({
             method: 'post',
             url: hook_url,
             headers: { 'Content-type': 'application/json' },
             data: msg_template
-        })
+        })*/
 
-        console.log(hookToSlack)
+        //console.log(hookToSlack)
         ctx.body = {
             "status": "success"
         }
