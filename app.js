@@ -136,7 +136,7 @@ async function add(ctx) {
         let result = await conn.query('INSERT INTO time_entries (project_id, user_id, work_package_id, hours, comments, activity_id, spent_on, tyear, tmonth, tweek, created_on, updated_on) ' +
             'VALUES ("' + project_id + '", "' + user_id + '", "' + work_package_id + '", "' + hours + '", "' + comments + '", "' + activity_id + '", NOW(), "' + tyear + '", "' + tmonth + '", "' + tweek + '", NOW(), NOW())')
         conn.end();
-        let totalHoursToday = await getTotalHours(user_id)
+        //let totalHoursToday = await getTotalHours(user_id)
 
         let msg_template = {
             "text": "[LogTime] Added on " + new Date() +
@@ -145,7 +145,7 @@ async function add(ctx) {
                 "\nWork Packages: " + wp_name +
                 "\nSpent: " + hours + " (Hours)" +
                 "\nDetails: " + comments +
-                "\nTotal spent today: " + totalHoursToday + " (Hours)"
+                "\nTotal spent today: " + "totalHoursToday" + " (Hours)"
         }
 
 
