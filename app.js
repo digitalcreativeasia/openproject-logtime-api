@@ -95,7 +95,7 @@ async function getTotalHours(user_id) {
     let rows = await result
     conn.end();
     console.log(rows[0]['total'])
-    return rows[0]['total']
+    return rows[0]['total'].toFixed(2)
     /*console.log(rows)
     ctx.body = {
         "status": rows
@@ -155,7 +155,7 @@ async function add(ctx) {
             data: msg_template
         })
 
-        console.log(hookToSlack)
+        //console.log(hookToSlack)
         ctx.body = {
             "status": "success"
         }
