@@ -103,8 +103,7 @@ async function getTotalHours(user_id) {
 }
 
 
-async function add(ctx) {
-    //check 
+/*async function add(ctx) {
     var user = auth(ctx.request)
     let response = await axios({
         method: 'get',
@@ -118,10 +117,10 @@ async function add(ctx) {
         let body = ctx.request.body
         let project_id = parseInt(body['project_id'])
         let user_id = parseInt(body['user_id'])
-        //let user_name = body['user_name']
-        //let user_email = body['user_email']
-        //let project_name = body['project_name']
-        //let wp_name = body['wp_name']
+        let user_name = body['user_name']
+        let user_email = body['user_email']
+        let project_name = body['project_name']
+        let wp_name = body['wp_name']
         let work_package_id = parseInt(body['work_package_id'])
         let hours = parseFloat(body['hours'])
         let comments = body['comments']
@@ -138,7 +137,6 @@ async function add(ctx) {
         conn.end();
         //let totalHoursToday = await getTotalHours(user_id)
 
-        /*
         let msg_template = {
             "text": "[LogTime] Added on " + new Date() +
                 "\nUser: " + user_name + " (" + user_email + ")" +
@@ -147,17 +145,17 @@ async function add(ctx) {
                 "\nSpent: " + hours + " (Hours)" +
                 "\nDetails: " + comments +
                 "\nTotal spent today: " + "totalHoursToday" + " (Hours)"
-        }*/
+        }
 
 
-        /*let hookToSlack = await axios({
+        let hookToSlack = await axios({
             method: 'post',
             url: hook_url,
             headers: { 'Content-type': 'application/json' },
             data: msg_template
-        })*/
+        })
 
-        //console.log(hookToSlack)
+        console.log(hookToSlack)
         ctx.body = {
             "status": "success"
         }
@@ -170,11 +168,53 @@ async function add(ctx) {
             "message": "Unauthenticated"
         }
     }
+}*/
+
+async function add(ctx) {
+    //check 
+    var user = auth(ctx.request)
+    let response = await axios({
+        method: 'get',
+        url: api_url,
+        auth: {
+            username: user.name,
+            password: user.pass
+        }
+    })
+    if (response.status === 200) {
+        let body = ctx.request.body
+        let project_id = parseInt(body['project_id'])
+        let user_id = parseInt(body['user_id'])
+        let work_package_id = parseInt(body['work_package_id'])
+        let hours = parseFloat(body['hours'])
+        let comments = body['comments']
+        let activity_id = parseInt(body['activity_id'])
+        let tyear = moment().year()
+        let tmonth = moment().month()
+        let tweek = parseInt(moment().format('W'))
+        let created_on = new Date()
+        let updated_on = new Date()
+
+        let conn = await mysql.createConnection(dbcredentials)
+        let result = await conn.query('INSERT INTO time_entries (project_id, user_id, work_package_id, hours, comments, activity_id, spent_on, tyear, tmonth, tweek, created_on, updated_on) ' +
+            'VALUES ("' + project_id + '", "' + user_id + '", "' + work_package_id + '", "' + hours + '", "' + comments + '", "' + activity_id + '", NOW(), "' + tyear + '", "' + tmonth + '", "' + tweek + '", NOW(), NOW())')
+        conn.end();
+        console.log(result)
+        ctx.body = {
+            "status": "success"
+        }
+    } else {
+        ctx.status = 401
+        ctx.body = {
+            "_type": "Error",
+            "errorIdentifier": "urn:openproject-org:api:v3:errors:Unauthenticated",
+            "message": "Unauthenticated"
+        }
+    }
 }
 
-
-
 app.on('error', (err, ctx) => {
+    console.log(err)
     ctx.body = { "error": "internal server error" }
 });
 
