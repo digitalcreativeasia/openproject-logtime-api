@@ -61,7 +61,7 @@ async function enumTypes(ctx) {
 
 async function testPost(ctx) {
 
-    let totalHoursToday = await getTotalHours(3)
+    //let totalHoursToday = await getTotalHours(3)
     let msg_template = {
         "text": "[LogTime] Added on " + new Date() +
             "\nUser: " + "user_name" + " (" + "user_email" + ")" +
