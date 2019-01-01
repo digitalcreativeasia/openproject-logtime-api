@@ -118,10 +118,10 @@ async function add(ctx) {
         let body = ctx.request.body
         let project_id = parseInt(body['project_id'])
         let user_id = parseInt(body['user_id'])
-        let user_name = body['user_name']
-        let user_email = body['user_email']
-        let project_name = body['project_name']
-        let wp_name = body['wp_name']
+        //let user_name = body['user_name']
+        //let user_email = body['user_email']
+        //let project_name = body['project_name']
+        //let wp_name = body['wp_name']
         let work_package_id = parseInt(body['work_package_id'])
         let hours = parseFloat(body['hours'])
         let comments = body['comments']
