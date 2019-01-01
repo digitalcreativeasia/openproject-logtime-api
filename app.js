@@ -23,7 +23,8 @@ app.use(json())
 app.use(logger());
 
 router.post('/', add)
-    .get('/enum', enumTypes);
+    .get('/enum', enumTypes)
+    .get('/test', testPost);
 
 app.use(router.routes());
 
