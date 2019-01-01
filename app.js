@@ -45,7 +45,7 @@ async function enumTypes(ctx) {
         let conn = await mysql.createConnection(dbcredentials)
         let result = await conn.query('SELECT * FROM enumerations WHERE type="TimeEntryActivity"')
         conn.end();
-        console.log(result)
+        //console.log(result)
         ctx.body = result
     } else {
         ctx.status = 401
@@ -55,6 +55,36 @@ async function enumTypes(ctx) {
             "message": "Unauthenticated"
         }
     }
+}
+
+
+async function testPost(ctx) {
+
+    let totalHoursToday = await getTotalHours(3)
+    let msg_template = {
+        "text": "[LogTime] Added on " + new Date() +
+            "\nUser: " + "user_name" + " (" + "user_email" + ")" +
+            "\nProject: " + "project_name" +
+            "\nWork Packages: " + "wp_name" +
+            "\nSpent: " + "hours" + " (Hours)" +
+            "\nDetails: " + "comments" +
+            "\nTotal spent today: " + "totalHoursToday" + " (Hours)"
+    }
+
+    let hookToSlack = await axios({
+        method: 'post',
+        url: hook_url,
+        headers: { 'Content-type': 'application/json' },
+        data: msg_template
+    })
+
+    console.log(hookToSlack.status)
+    console.log(hookToSlack)
+
+    ctx.body = {
+        "test": "test"
+    }
+
 }
 
 
@@ -120,7 +150,7 @@ async function add(ctx) {
         let hookToSlack = await axios({
             method: 'post',
             url: hook_url,
-            headers: {'Content-type': 'application/json'},
+            headers: { 'Content-type': 'application/json' },
             data: msg_template
         })
 
@@ -128,6 +158,7 @@ async function add(ctx) {
         ctx.body = {
             "status": "success"
         }
+
     } else {
         ctx.status = 401
         ctx.body = {
