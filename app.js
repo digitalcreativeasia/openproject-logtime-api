@@ -67,7 +67,7 @@ async function getTotalHours(ctx){
     conn.end();
         console.log(rows)
         ctx.body = {
-            "status": "success"
+            "status": rows
         }
 }
 
