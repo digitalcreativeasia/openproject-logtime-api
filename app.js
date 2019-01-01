@@ -94,7 +94,8 @@ async function getTotalHours(user_id) {
     let result = await conn.query('SELECT SUM(hours) AS total FROM time_entries WHERE DATE(spent_on) = CURDATE() AND user_id = "' + user_id + '"')
     let rows = await result
     conn.end();
-    return rows[0]['total'].toFixed(2)
+    console.log(rows[0]['total'])
+    return rows[0]['total']
     /*console.log(rows)
     ctx.body = {
         "status": rows
