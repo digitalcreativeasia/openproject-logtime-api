@@ -23,7 +23,8 @@ app.use(json())
 app.use(logger());
 
 router.post('/', add)
-    .get('/enum', enumTypes);
+    .get('/enum', enumTypes)
+    .get('/test', getTotalHours);
 
 app.use(router.routes());
 
@@ -58,6 +59,17 @@ async function enumTypes(ctx) {
 }
 
 
+async function getTotalHours(ctx){
+    let user_id = '3'
+    let conn = await mysql.createConnection(dbcredentials)
+    let result = await conn.query('SELECT SUM(hours) AS total FROM time_entries WHERE DATE(spent_on) = CURDATE() AND user_id = "'+user_id+'"')
+    let rows = await result
+    conn.end();
+        console.log(rows)
+        ctx.body = {
+            "status": "success"
+        }
+}
 
 
 async function add(ctx) {
