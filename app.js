@@ -183,6 +183,7 @@ async function add(ctx) {
     })
     if (response.status === 200) {
         let body = ctx.request.body
+        console.log(body)
         let project_id = parseInt(body['project_id'])
         let user_id = parseInt(body['user_id'])
         let work_package_id = parseInt(body['work_package_id'])
