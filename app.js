@@ -138,6 +138,7 @@ async function add(ctx) {
         conn.end();
         //let totalHoursToday = await getTotalHours(user_id)
 
+        /*
         let msg_template = {
             "text": "[LogTime] Added on " + new Date() +
                 "\nUser: " + user_name + " (" + user_email + ")" +
@@ -146,7 +147,7 @@ async function add(ctx) {
                 "\nSpent: " + hours + " (Hours)" +
                 "\nDetails: " + comments +
                 "\nTotal spent today: " + "totalHoursToday" + " (Hours)"
-        }
+        }*/
 
 
         /*let hookToSlack = await axios({
