@@ -8,7 +8,7 @@ const json = require('koa-json')
 const moment = require('moment')
 const mysql = require('promise-mysql')
 
-const { dbcredentials, api_url, hook_url } = require('./config')
+const { dbcredentials, api_url, hook_url, checkuser } = require('./config')
 
 const Koa = require('koa');
 const app = module.exports = new Koa();
@@ -24,7 +24,7 @@ app.use(logger());
 
 router.post('/', add)
     .get('/enum', enumTypes)
-    .get('/test', testPost);
+    .get('/check', checkUser);
 
 app.use(router.routes());
 
@@ -86,6 +86,30 @@ async function testPost(ctx) {
         "test": "test"
     }
 
+}
+
+
+async function checkUser(ctx) {
+    var user = auth(ctx.request)
+    let response = await axios({
+        method: 'get',
+        url: api_url + checkuser,
+        auth: {
+            username: user.name,
+            password: user.pass
+        }
+    })
+    //console.log(JSON.stringify(response.data))
+    if (response.status === 200) {
+        ctx.body = JSON.stringify(response.data)
+    } else {
+        ctx.status = 401
+        ctx.body = {
+            "_type": "Error",
+            "errorIdentifier": "urn:openproject-org:api:v3:errors:Unauthenticated",
+            "message": "Unauthenticated"
+        }
+    }
 }
 
 
