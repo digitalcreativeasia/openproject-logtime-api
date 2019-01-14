@@ -204,7 +204,7 @@ async function hook(ctx) {
     let action = body['action'].replace(":", " ").replace("_", " ");
     let project = body['work_package']['_embedded']['project']['name'];
     let status = body['work_package']['_embedded']['status']['name'];
-    let responsible = body['work_package']['_embedded']['project']['responsible']['firstName'] + body['_embedded']['project']['responsible']['lastName']+" ("+body['_embedded']['project']['responsible']['login']+")";
+    let responsible = body['work_package']['_embedded']['responsible']['firstName'] + body['work_package']['_embedded']['responsible']['lastName']+" ("+body['work_package']['_embedded']['responsible']['login']+")";
     let workpackage = body['work_package']['subject']
     let percentage = body['work_package']['percentageDone']
     let updateAt = body['work_package']['updatedAt']
