@@ -202,8 +202,9 @@ async function hook(ctx) {
     //console.log(body)
 
     let action = body['action'].replace(":", " ").replace("_", " ");
-    let project = body['_embedded']['project']['name'];
-    let responsible = body['_embedded']['project']['responsible']['firstName'] + body['_embedded']['project']['responsible']['lastName']+" ("+body['_embedded']['project']['responsible']['login']+")";
+    let project = body['work_package']['_embedded']['project']['name'];
+    let status = body['work_package']['_embedded']['status']['name'];
+    let responsible = body['work_package']['_embedded']['project']['responsible']['firstName'] + body['_embedded']['project']['responsible']['lastName']+" ("+body['_embedded']['project']['responsible']['login']+")";
     let workpackage = body['work_package']['subject']
     let percentage = body['work_package']['percentageDone']
     let updateAt = body['work_package']['updatedAt']
@@ -212,6 +213,7 @@ async function hook(ctx) {
     "Update at: "+updateAt+"\n"+
     "Project: "+project+"\n"+
     "Work Packages: "+workpackage+"\n"+
+    "Status: "+status+"\n"+
     "Responsible: "+responsible+"\n"+
     "Percentage Done: "+percentage+"%\n";
 
