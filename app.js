@@ -8,7 +8,7 @@ const json = require('koa-json')
 const moment = require('moment')
 const mysql = require('promise-mysql')
 
-const { dbcredentials, api_url, hook_url, checkuser } = require('./config')
+const { dbcredentials, api_url, hook_url, checkuser, op_hook } = require('./config')
 
 const Koa = require('koa');
 const app = module.exports = new Koa();
@@ -23,7 +23,7 @@ app.use(json())
 app.use(logger());
 
 router.post('/', add)
-    .post('/test', hook)
+    .post('/op', hook)
     .get('/enum', enumTypes)
     .get('/check', checkUser);
 
@@ -204,7 +204,7 @@ async function hook(ctx) {
     let action = body['action'].replace(":", " ").replace("_", " ");
     let project = body['work_package']['_embedded']['project']['name'];
     let status = body['work_package']['_embedded']['status']['name'];
-    let responsible = body['work_package']['_embedded']['responsible']['firstName'] + body['work_package']['_embedded']['responsible']['lastName']+" ("+body['work_package']['_embedded']['responsible']['login']+")";
+    let responsible = body['work_package']['_embedded']['responsible']['firstName'] + " "+body['work_package']['_embedded']['responsible']['lastName']+" ("+body['work_package']['_embedded']['responsible']['login']+")";
     let workpackage = body['work_package']['subject']
     let percentage = body['work_package']['percentageDone']
     let updateAt = body['work_package']['updatedAt']
@@ -218,6 +218,13 @@ async function hook(ctx) {
     "Percentage Done: "+percentage+"%\n";
 
     console.log(text)
+
+    let hookToSlack = await axios({
+        method: 'post',
+        url: op_hook,
+        headers: { 'Content-type': 'application/json' },
+        data: text
+    })
 
     ctx.body = {
         "message": text
