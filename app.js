@@ -172,6 +172,7 @@ async function add(ctx) {
                 "\nTotal spent today: " + totalHoursToday + " (Hours)"
         }
 
+        
 
         let hookToSlack = await axios({
             method: 'post',
@@ -219,11 +220,16 @@ async function hook(ctx) {
 
     console.log(text)
 
+    let msg_template = {
+        "text": text
+    }
+    
+
     let hookToSlack = await axios({
         method: 'post',
         url: op_hook,
         headers: { 'Content-type': 'application/json' },
-        data: text
+        data: msg_template
     })
 
     ctx.body = {
