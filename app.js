@@ -210,7 +210,7 @@ async function hook(ctx) {
     let updateAt = body['work_package']['updatedAt']
 
     let text = "Action: "+action+"\n"+
-    "Update at: "+updateAt+"\n"+
+    "Update at: "+new Date(updateAt)+"\n"+
     "Project: "+project+"\n"+
     "Work Packages: "+workpackage+"\n"+
     "Status: "+status+"\n"+
