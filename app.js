@@ -23,6 +23,7 @@ app.use(json())
 app.use(logger());
 
 router.post('/', add)
+    .post('/test', hook)
     .get('/enum', enumTypes)
     .get('/check', checkUser);
 
@@ -194,50 +195,15 @@ async function add(ctx) {
     }
 }
 
-/*
-async function add(ctx) {
-    //check 
-    var user = auth(ctx.request)
-    let response = await axios({
-        method: 'get',
-        url: api_url,
-        auth: {
-            username: user.name,
-            password: user.pass
-        }
-    })
-    if (response.status === 200) {
-        let body = ctx.request.body
-        console.log(body)
-        let project_id = parseInt(body['project_id'])
-        let user_id = parseInt(body['user_id'])
-        let work_package_id = parseInt(body['work_package_id'])
-        let hours = parseFloat(body['hours'])
-        let comments = body['comments']
-        let activity_id = parseInt(body['activity_id'])
-        let tyear = moment().year()
-        let tmonth = moment().month()
-        let tweek = parseInt(moment().format('W'))
-        let created_on = new Date()
-        let updated_on = new Date()
 
-        let conn = await mysql.createConnection(dbcredentials)
-        let result = await conn.query('INSERT INTO time_entries (project_id, user_id, work_package_id, hours, comments, activity_id, spent_on, tyear, tmonth, tweek, created_on, updated_on) ' +
-            'VALUES ("' + project_id + '", "' + user_id + '", "' + work_package_id + '", "' + hours + '", "' + comments + '", "' + activity_id + '", NOW(), "' + tyear + '", "' + tmonth + '", "' + tweek + '", NOW(), NOW())')
-        conn.end();
-        console.log(result)
-        ctx.body = {
-            "status": "success"
-        }
-    } else {
-        ctx.status = 401
-        ctx.body = {
-            "_type": "Error",
-            "errorIdentifier": "urn:openproject-org:api:v3:errors:Unauthenticated",
-            "message": "Unauthenticated"
-        }
+async function hook(ctx) {
+    //check 
+    let body = ctx.request.body
+    console.log(body)
+    ctx.body = {
+        "message": "success"
     }
-}*/
+}
 
 app.on('error', (err, ctx) => {
     console.log(err)
