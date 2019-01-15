@@ -236,6 +236,15 @@ async function hook(ctx) {
     let typeTask = body['work_package']['_embedded']['type']['name']
     let priority = body['work_package']['_embedded']['priority']['name']
 
+    console.log(duration)
+
+    let uaStr = new Date(updateAt);
+
+    console.log(uaStr);
+
+    let durStr = durToHours(duration);
+
+    console.log(durStr)
 
     let payload = {
         "text": ":package: *" + action + "*",
@@ -243,7 +252,6 @@ async function hook(ctx) {
             {
                 "fallback": "Required plain-text summary of the attachment.",
                 "color": "#36a64f",
-                "pretext": "--------------------------------------------------------------------",
                 "author_name": responsible,
                 "author_link": "http://holiday.digitalcreativeasia.com/project/project/users/" + authorLink,
                 "author_icon": authorAva,
@@ -258,7 +266,7 @@ async function hook(ctx) {
                     },
                     {
                         "title": ":runner: Update At",
-                        "value": new Date(updateAt),
+                        "value": uaStr,
                         "short": false
                     },
                     {
@@ -273,7 +281,7 @@ async function hook(ctx) {
                     },
                     {
                         "title": ":nail_care: Spent",
-                        "value": durToHours(duration)+"Hrs",
+                        "value": durStr+"Hrs",
                         "short": true
                     },
                     {
@@ -292,11 +300,9 @@ async function hook(ctx) {
                         "short": false
                     }
                 ],
-                "image_url": "https://www.digitalcreativeasia.com/wp-content/uploads/2018/09/dca-new-logo-footer.png",
-                "thumb_url": "http://example.com/path/to/thumb.png",
+                "thumb_url": "https://www.digitalcreativeasia.com/wp-content/uploads/2018/09/dca-new-logo-footer.png",
                 "footer": "DC-Asia",
-                "footer_icon": "https://avatars3.githubusercontent.com/u/41264133?s=200&v=4",
-                "ts": 123456789
+                "footer_icon": "https://avatars3.githubusercontent.com/u/41264133?s=200&v=4"
             }
         ]
     }
