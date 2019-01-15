@@ -14,3 +14,9 @@ function durToHours(duration) {
     return ((hours * 3600 + minutes * 60 + seconds) / 3600).toFixed(1)
     ;
   }
+
+  var Duration = require('js-joda').Duration;
+
+  let x = Duration.parse("PT0S")
+
+  console.log(x)

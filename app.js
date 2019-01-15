@@ -238,7 +238,7 @@ async function hook(ctx) {
 
     console.log(duration)
 
-    let uaStr = new Date(updateAt);
+    let uaStr = ""+new Date(updateAt)+"";
 
     console.log(uaStr);
 
