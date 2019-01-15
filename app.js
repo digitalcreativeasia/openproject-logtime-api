@@ -30,6 +30,24 @@ router.post('/', add)
 app.use(router.routes());
 
 
+function durToHours(duration) {
+    var match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+
+    match = match.slice(1).map(function (x) {
+        if (x != null) {
+            return x.replace(/\D/, '');
+        }
+    });
+
+    var hours = (parseInt(match[0]) || 0);
+    var minutes = (parseInt(match[1]) || 0);
+    var seconds = (parseInt(match[2]) || 0);
+
+    return ((hours * 3600 + minutes * 60 + seconds) / 3600).toFixed(1)
+        ;
+}
+
+
 
 async function enumTypes(ctx) {
     //check 
@@ -172,7 +190,7 @@ async function add(ctx) {
                 "\nTotal spent today: " + totalHoursToday + " (Hours)"
         }
 
-        
+
 
         let hookToSlack = await axios({
             method: 'post',
@@ -204,32 +222,103 @@ async function hook(ctx) {
 
     let action = body['action'].replace(":", " ").replace("_", " ");
     let project = body['work_package']['_embedded']['project']['name'];
+    let projectIdentifier = body['work_package']['_embedded']['project']['identifier'];
     let status = body['work_package']['_embedded']['status']['name'];
-    let responsible = body['work_package']['_embedded']['responsible']['firstName'] + " "+body['work_package']['_embedded']['responsible']['lastName']+" ("+body['work_package']['_embedded']['responsible']['login']+")";
+    let responsible = body['work_package']['_embedded']['responsible']['firstName'] + " " + body['work_package']['_embedded']['responsible']['lastName'] + " (" + body['work_package']['_embedded']['responsible']['login'] + ")";
+    let assignee = body['work_package']['_embedded']['assignee']['firstName'] + " " + body['work_package']['_embedded']['assignee']['lastName'] + " (" + body['work_package']['_embedded']['assignee']['login'] + ")";
     let workpackage = body['work_package']['subject']
+    let workpackageId = body['work_package']['id']
     let percentage = body['work_package']['percentageDone']
     let updateAt = body['work_package']['updatedAt']
+    let authorLink = body['work_package']['_embedded']['responsible']['id']
+    let authorAva = body['work_package']['_embedded']['responsible']['avatar']
+    let duration = body['work_package']['spentTime']
+    let typeTask = body['work_package']['_embedded']['type']['name']
+    let priority = body['work_package']['_embedded']['Priority']['name']
 
-    let text = "Action: "+action+"\n"+
-    "Update at: "+new Date(updateAt)+"\n"+
-    "Project: "+project+"\n"+
-    "Work Packages: "+workpackage+"\n"+
-    "Status: "+status+"\n"+
-    "Responsible: "+responsible+"\n"+
-    "Percentage Done: "+percentage+"%\n";
+
+    let payload = {
+        "text": ":package: *" + action + "*",
+        "attachments": [
+            {
+                "fallback": "Required plain-text summary of the attachment.",
+                "color": "#36a64f",
+                "pretext": "--------------------------------------------------------------------",
+                "author_name": responsible,
+                "author_link": "http://holiday.digitalcreativeasia.com/project/project/users/" + authorLink,
+                "author_icon": authorAva,
+                "title": project,
+                "title_link": "http://holiday.digitalcreativeasia.com/project/projects/" + projectIdentifier,
+
+                "fields": [
+                    {
+                        "title": ":fire: Workpacakage",
+                        "value": "<http://holiday.digitalcreativeasia.com/project/projects/smart-cluster/work_packages/" + workpackageId + "|" + workpackage + ">",
+                        "short": false
+                    },
+                    {
+                        "title": ":runner: Update At",
+                        "value": new Date(updateAt),
+                        "short": false
+                    },
+                    {
+                        "title": ":memo: Status",
+                        "value": status,
+                        "short": true
+                    },
+                    {
+                        "title": ":hourglass: Progress",
+                        "value": percentage + "%",
+                        "short": true
+                    },
+                    {
+                        "title": ":nail_care: Spent",
+                        "value": durToHours(spentTime)+"Hrs",
+                        "short": true
+                    },
+                    {
+                        "title": ":rowboat: Type & Priority",
+                        "value": typeTask+" - "+priority,
+                        "short": true
+                    },
+                    {
+                        "title": ":cop: Assignee:",
+                        "value": assignee,
+                        "short": false
+                    },
+                    {
+                        "title": ":man_with_turban: Responsible:",
+                        "value": responsible,
+                        "short": false
+                    }
+                ],
+                "image_url": "https://www.digitalcreativeasia.com/wp-content/uploads/2018/09/dca-new-logo-footer.png",
+                "thumb_url": "http://example.com/path/to/thumb.png",
+                "footer": "DC-Asia",
+                "footer_icon": "https://avatars3.githubusercontent.com/u/41264133?s=200&v=4",
+                "ts": 123456789
+            }
+        ]
+    }
+
+    let text = "Action: " + action + "\n" +
+        "Update at: " + new Date(updateAt) + "\n" +
+        "Project: " + project + "\n" +
+        "Work Packages: " + workpackage + "\n" +
+        "Status: " + status + "\n" +
+        "Responsible: " + responsible + "\n" +
+        "Percentage Done: " + percentage + "%\n";
 
     console.log(text)
 
-    let msg_template = {
-        "text": text
-    }
-    
+
+
 
     let hookToSlack = await axios({
         method: 'post',
         url: op_hook,
         headers: { 'Content-type': 'application/json' },
-        data: msg_template
+        data: payload
     })
 
     ctx.body = {
