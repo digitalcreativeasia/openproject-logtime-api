@@ -234,7 +234,7 @@ async function hook(ctx) {
     let authorAva = body['work_package']['_embedded']['responsible']['avatar']
     let duration = body['work_package']['spentTime']
     let typeTask = body['work_package']['_embedded']['type']['name']
-    let priority = body['work_package']['_embedded']['Priority']['name']
+    let priority = body['work_package']['_embedded']['priority']['name']
 
 
     let payload = {
