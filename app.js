@@ -273,7 +273,7 @@ async function hook(ctx) {
                     },
                     {
                         "title": ":nail_care: Spent",
-                        "value": durToHours(spentTime)+"Hrs",
+                        "value": durToHours(duration)+"Hrs",
                         "short": true
                     },
                     {
